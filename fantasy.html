@@ -1,0 +1,46 @@
+<head>
+  <title>ASOIAF Fantasy Draft</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Draft Class</h1>
+  </header>
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="well">
+        {{> newWarrior}}
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="well">
+        <ul>
+          {{#each warriors}}
+          <div class="row">
+            <div class="col-xs-6">
+              <li class="warrior-display warrior {{selectedClass}}">{{name}}: {{rank}}</li>
+            </div>
+            <div class="col-xs-6">
+              <button class="btn btn-danger btn-xs remove" type="button">Remove Player</button>
+            </div>
+          </div>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<template name="warrior">
+</template>
+<template name="newWarrior">
+  <form>
+    <div class="form-group">
+      <input class="form-control" type="text" name="warriorName" placeholder="Type to add new warriors">
+    </div>
+    <button class="btn btn-success" type="submit">Add Warrior</button>
+  </form>
+</template>

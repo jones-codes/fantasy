@@ -1,0 +1,8 @@
+/* CSS declarations go here */
+.selected {
+    background-color: yellow;
+}
+
+.warrior-display {
+    list-style-type: none;
+}
