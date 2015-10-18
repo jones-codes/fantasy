@@ -29,47 +29,90 @@
 </div>
 <div class="container">
   <div class="row">
-    <div class="col-xs-6">
+    <div class="col-md-4-offset">
+    </div>
+    <div class="col-md-4">
       <div class="well">
         <h2 class="header text-center">Add Warriors</h2>
         {{> newWarrior}}
       </div>
     </div>
-    <div class="col-xs-6">
-      {{> warrior}}
+    <div class="col-md-4-offset">
     </div>
   </div>
+</div>
+<div class="container">
+  {{> warrior}}
 </div>
 
 </body>
 <template name="warrior">
   {{#if currentUser}}
+  <div class="container">
+    <div class="row">
+      <div class=col-md-9>
       <div class="well">
-        <h2 class="header text-center">Draft Class</h2>
-        <ul>
-          {{#each warriors}}
-          <div class="row">
-            <div class="col-xs-6">
-              <li class="warrior-display warrior {{selectedClass}}">{{name}}: {{rank}}</li>
+        <div class="row">
+          <h2 class="header text-center">Draft Class</h2>
+            <div class="col-md-1">
+              <h4 class="header text-center">Ranking</h4>
             </div>
-            <div class="col-xs-6">
-              <button class="btn btn-danger btn-xs remove" type="button">Remove Warrior</button>
-              <button class="btn btn-success btn-xs draft" type="button">Draft Warrior</button>
+            <div class="col-md-9">
+              <h4 class="header text-center">Name</h4>
+            </div>
+            <div class="col-md-2">
+              <h4 class="header text-center">Actions</h4>
             </div>
           </div>
-          {{/each}}
-        </ul>
+            <ul>
+              {{#each warriors}}
+              <div class="row">
+                <div class="col-md-1">
+                  <li class="warrior-display warrior {{selectedClass}}">{{rank}}</li>
+                </div>
+                <div class="col-md-9">
+                  <li class="warrior-display warrior {{selectedClass}}">{{name}}</li>
+                </div>
+                <div class="col-md-2">
+                  <button class="btn btn-danger btn-xs remove" type="button">-</button>
+                  <button class="btn btn-success btn-xs draft" type="button">Draft</button>
+                </div>
+              </div>
+              {{/each}}
+            </ul>
+           </div> 
+        </div>
+      
+      <div class="col-md-3">
+        <div class="well">
+          <h4 class="header text-center">Your Team</h4>
+          {{> currentTeam}}
+        </div>
       </div>
-      {{/if}}
+    </div>
+    </div>
+  {{/if}}
+      
 </template>
+
 <template name="newWarrior">
   <form>
     <div class="form-group">
-      <input class="form-control" type="text" name="warriorName" placeholder="Type to add new warriors">
+      <input class="form-control" type="text" name="warriorName" placeholder="Enter Warrior's Name">
+    </div>
+    <div class="form-group">
+      <input class="form-control" type="number" name="rank" min="1" max="64" placeholder="Enter Warrior's Rank">
+    </div>
+    <div class="form-group">
+      <input class="form-control" type="text" name="weapon" placeholder="Enter Warrior's Weaponry">
+    </div>
+    <div class="form-group">
+      <input class="form-control" type="text" name="armor" placeholder="Enter Warrior's Armor">
     </div>
     <button class="btn btn-success" type="submit">Add Warrior</button>
   </form>
 </template>
+
 <template name="register">
   <h2 class="header text-center">Register</h2>
     <form>
@@ -82,6 +125,7 @@
         <button class="btn btn-primary" type="submit">Register</button>
     </form>
 </template>
+
 <template name="login">
   <h2 class="header text-center">Login</h2>
     <form>
@@ -94,7 +138,13 @@
       <button class="btn btn-primary" type="submit">Login</button>
     </form>
 </template>
+
 <template name="dashboard">
   <p>You're logged in.</p>
   <p><a href="#" class="logout">Logout</a></p>
+</template>
+<template name="currentTeam">
+  {{#each currentWarriors}}
+    <li class="warrior-display currentTeam">{{name}}</li>
+  {{/each}}
 </template>

@@ -1,6 +1,5 @@
 /* global Warriors */
 Warriors = new Mongo.Collection("warriors");
-var rank = 2;
 if (Meteor.isServer) {
   Meteor.publish('theWarriors', function(){
     return Warriors.find();
@@ -11,12 +10,14 @@ if (Meteor.isServer) {
       var currentUserId = Meteor.userId();
       Warriors.update(selectedWarrior, {$addtoSet: {draftedBy: currentUserId}});
     },
-    'insertWarriorData': function(warriorNameVar){
+    'insertWarriorData': function(warriorNameVar, rankVar, weaponVar, armorVar){
       var currentUserId = Meteor.userId();
-      
+      rankVar = Number(rankVar);
       Warriors.insert({
         name: warriorNameVar,
-        rank: rank,
+        rank: rankVar,
+        weapon: weaponVar,
+        armor: armorVar,
         createdBy: currentUserId
       });
     },
@@ -29,11 +30,12 @@ if (Meteor.isServer) {
 }
 if (Meteor.isClient) {
   Meteor.subscribe('theWarriors');
+  
   Template.warrior.helpers({
     warriors: function () {
       //Show highest rank at the top
       var currentUserId = Meteor.userId();
-      return Warriors.find({}, {sort: {rank: +1}});
+      return Warriors.find({draftedBy: undefined}, {sort: {rank: 1}});
       //return Warriors.find({claimedBy: currentUserId}, {sort: {rank: +1}});
     },
     'selectedClass': function () {
@@ -44,13 +46,28 @@ if (Meteor.isClient) {
       }
     }
   });
+  
+  Template.currentTeam.helpers({
+    currentWarriors: function () {
+      //Show highest rank at the top
+      var currentUserId = Meteor.userId();
+      return Warriors.find({draftedBy: currentUserId}, {sort: {rank: 1}});
+    }
+  });
   Template.newWarrior.events({
     'submit form': function(event){
       event.preventDefault();
       var warriorNameVar = event.target.warriorName.value;
-      rank = rank + 1;
-      Meteor.call('insertWarriorData', warriorNameVar);
+      var rankVar = event.target.rank.value;
+      var weaponVar = event.target.weapon.value;
+      var armorVar = event.target.armor.value;
+      
+      Meteor.call('insertWarriorData', warriorNameVar, rankVar, weaponVar, armorVar);
       event.target.warriorName.value = "";
+      event.target.rank.value = "";
+      event.target.weapon.value = "";
+      event.target.armor.value = "";
+      
      }
   });
    Template.warrior.events({
@@ -80,7 +97,6 @@ if (Meteor.isClient) {
     'click .remove': function(){
       var selectedWarrior = Session.get('selectedWarrior');
       Meteor.call('removeWarriorData', selectedWarrior);
-      rank = rank - 1;
     },
     'click .draft': function(){
       var selectedWarrior = Session.get('selectedWarrior');
